@@ -42,8 +42,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const addProduct = (product: CardProduct) => {
     const productIsAlreadyOnTheCart = products.some((prevProduct) => prevProduct.id === product.id);
 
-    console.log(product);
-
     if (!productIsAlreadyOnTheCart) {
       setProducts((prev) => [...prev, product]);
     }
