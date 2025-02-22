@@ -46,6 +46,7 @@ const ProductDetails = ({ product }: IProductDetailsProps) => {
       ...product,
       quantity,
     });
+
     toggleCart();
   };
 
