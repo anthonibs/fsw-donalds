@@ -20,9 +20,7 @@ const ProductHeader = ({ product }: IProductHeaderProps) => {
   };
 
   return (
-    <div className="relative h-[300px] w-full">
-      <Image src={product.imageUrl} alt={product.name} fill className="object-contain" />
-
+    <div className="relative min-h-[300px] w-full">
       <Button
         variant={"secondary"}
         size={"icon"}
@@ -32,6 +30,8 @@ const ProductHeader = ({ product }: IProductHeaderProps) => {
       >
         <ChevronLeftIcon />
       </Button>
+
+      <Image src={product.imageUrl} alt={product.name} fill className="object-contain" />
 
       <Button
         variant={"secondary"}

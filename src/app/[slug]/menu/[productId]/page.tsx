@@ -3,6 +3,7 @@ import React from "react";
 
 import { db } from "@/lib/prisma";
 
+import ProductDetails from "./components/product-details";
 import ProductHeader from "./components/product-header";
 
 interface IProductPageProps {
@@ -16,17 +17,29 @@ const ProductPage = async ({ params }: IProductPageProps) => {
     where: {
       id: productId,
     },
+    include: {
+      restaurant: {
+        select: {
+          avatarImageUrl: true,
+          name: true,
+          slug: true,
+        },
+      },
+    },
   });
 
   if (!product) {
     return notFound();
   }
 
+  if (product.restaurant.slug.toUpperCase() !== slug.toUpperCase()) {
+    return notFound();
+  }
+
   return (
     <>
       <ProductHeader product={product} />
-
-      <div>{slug}</div>
+      <ProductDetails product={product} />
     </>
   );
 };
