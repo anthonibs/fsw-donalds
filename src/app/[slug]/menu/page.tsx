@@ -3,6 +3,7 @@ import React from "react";
 
 import { db } from "@/lib/prisma";
 
+import RestaurantCategories from "./components/categories";
 import RestaurantHeader from "./components/header";
 
 interface IRestaurantMenuPageProps {
@@ -30,6 +31,11 @@ const RestaurantMenuPage = async ({
     where: {
       slug,
     },
+    include: {
+      menuCategories: {
+        include: { products: true },
+      },
+    },
   });
 
   if (!restaurant) {
@@ -39,6 +45,8 @@ const RestaurantMenuPage = async ({
   return (
     <div>
       <RestaurantHeader restaurant={restaurant} />
+
+      <RestaurantCategories restaurant={restaurant} />
     </div>
   );
 };
