@@ -30,6 +30,8 @@ const ProductDetails = ({ product }: IProductDetailsProps) => {
 
   const [quantity, setQuantity] = useState(1);
 
+  console.log(quantity);
+
   const handleDecreaseQuantity = () => {
     setQuantity((prev) => {
       if (prev === 1) return 1;

@@ -13,7 +13,7 @@ const CartSheet = () => {
       <SheetContent className="w-[90%]">
         <div className="py-5">
           {products.map((product) => (
-            <CartProductItem key={product.id} item={product} />
+            <CartProductItem key={product.id} product={product} />
           ))}
         </div>
       </SheetContent>
