@@ -15,10 +15,7 @@ const isConsumptionMethodValid = (value: string) => {
   return ["DINE_IN", "TAKEAWAY"].includes(value.toUpperCase());
 };
 
-const RestaurantMenuPage = async ({
-  params,
-  searchParams,
-}: IRestaurantMenuPageProps) => {
+const RestaurantMenuPage = async ({ params, searchParams }: IRestaurantMenuPageProps) => {
   const { slug } = await params;
 
   const { consumptionMethod } = await searchParams;
@@ -45,7 +42,6 @@ const RestaurantMenuPage = async ({
   return (
     <div>
       <RestaurantHeader restaurant={restaurant} />
-
       <RestaurantCategories restaurant={restaurant} />
     </div>
   );

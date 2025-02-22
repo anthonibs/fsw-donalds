@@ -1,7 +1,7 @@
 "use client";
 
 import { Prisma } from "@prisma/client";
-import { ClockIcon } from "lucide-react";
+import { ClockIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -43,12 +43,16 @@ const RestaurantCategories = ({ restaurant }: IRestaurantCategoriesProps) => {
   return (
     <div className="relative z-50 mt-[-1.5rem] rounded-t-3xl border bg-white">
       <div className="p-5">
-        <div className="flex items-center gap-3">
+        <div className="relative flex items-center gap-3">
           <Image src={restaurant.avatarImageUrl} alt={restaurant.name} height={45} width={45} />
           <div>
             <h2 className="text-lg font-semibold">{restaurant.name}</h2>
             <p className="text-xs opacity-55">{restaurant.description}</p>
           </div>
+
+          <span className="absolute right-0 top-[50%] flex translate-y-[-50%] items-center justify-center gap-1 rounded-full border p-1 px-2 text-[12px] text-gray-400">
+            <StarIcon color="#FFBA19" size="16" /> 5.0
+          </span>
         </div>
 
         <div className="mt-3 flex items-center gap-1 text-xs text-green-500">
