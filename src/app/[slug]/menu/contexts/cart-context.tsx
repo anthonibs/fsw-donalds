@@ -16,6 +16,7 @@ interface ICartContext {
   decreaseProductQuantity: (productId: string) => void;
   increaseProductQuantity: (productId: string) => void;
   removeProduct: (productId: string) => void;
+  total: number;
 }
 
 export const CartContext = createContext<ICartContext>({
@@ -27,6 +28,7 @@ export const CartContext = createContext<ICartContext>({
   decreaseProductQuantity: () => {},
   increaseProductQuantity: () => {},
   removeProduct: () => {},
+  total: 0,
 });
 
 CartContext.displayName = "CartContext";
@@ -97,12 +99,15 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setProducts((prev) => prev.filter((prevProduct) => prevProduct.id !== productId));
   };
 
+  const total = products.reduce((acc, product) => acc + product.price * product.quantity, 0);
+
   return (
     <CartContext.Provider
       value={{
         children,
         isOpen,
         products,
+        total,
         toggleCart,
         addProduct,
         decreaseProductQuantity,
