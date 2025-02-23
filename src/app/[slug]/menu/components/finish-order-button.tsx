@@ -1,9 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import { ConsumptionMethod } from "@prisma/client";
+import { Loader2Icon } from "lucide-react";
+import { useParams, useSearchParams } from "next/navigation";
+import React, { useContext, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
+import { toast } from "sonner";
 import z from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -27,6 +31,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { isValidCpf } from "@/helpers/cpf-valid";
 
+import { createOrder } from "../actions/creact-order";
+import { CartContext } from "../contexts/cart-context";
+
 interface IFinishOrderDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -45,6 +52,12 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>;
 
 const FinishOrderDialog = ({ onOpenChange, open }: IFinishOrderDialogProps) => {
+  const { products } = useContext(CartContext);
+
+  const { slug } = useParams<{ slug: string }>();
+  const [isPending, startTransition] = useTransition();
+
+  const searchParams = useSearchParams();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,8 +67,25 @@ const FinishOrderDialog = ({ onOpenChange, open }: IFinishOrderDialogProps) => {
     shouldUnregister: true,
   });
 
-  const onSubmit = (data: FormSchema) => {
-    console.log(data);
+  const onSubmit = async (data: FormSchema) => {
+    try {
+      const consumptionMethod = searchParams.get("consumptionMethod") as ConsumptionMethod;
+
+      startTransition(async () => {
+        await createOrder({
+          consumptionMethod,
+          customerCpf: data.cpf,
+          customerName: data.username,
+          products,
+          slug,
+        });
+
+        onOpenChange(false);
+        toast.success("Pedido realizado com sucesso!");
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -67,6 +97,7 @@ const FinishOrderDialog = ({ onOpenChange, open }: IFinishOrderDialogProps) => {
             Insira suas informações abaixo para finalizar o seu pedido
           </DrawerDescription>
         </DrawerHeader>
+
         <div className="p-5">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -77,7 +108,12 @@ const FinishOrderDialog = ({ onOpenChange, open }: IFinishOrderDialogProps) => {
                   <FormItem>
                     <FormLabel>Nome</FormLabel>
                     <FormControl>
-                      <Input placeholder="Digite seu nome" {...field} />
+                      <Input
+                        placeholder="Digite seu nome"
+                        autoComplete="new-name"
+                        type="name"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -104,9 +140,15 @@ const FinishOrderDialog = ({ onOpenChange, open }: IFinishOrderDialogProps) => {
                 )}
               />
               <DrawerFooter>
-                <Button type="submit" className="w-full rounded-full" variant="default">
-                  Finalizar
+                <Button
+                  type="submit"
+                  className="w-full rounded-full"
+                  variant="default"
+                  disabled={isPending}
+                >
+                  {isPending ? <Loader2Icon className="animate-spin" /> : "Finalizar pedido"}
                 </Button>
+
                 <DrawerClose>
                   <Button className="w-full rounded-full" variant="secondary">
                     Cancel
