@@ -13,6 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OrderStatus {
+  PENDING
+  IN_PREPARATION
+  FINISHED
+}
+
+enum ConsumptionMethod {
+  TAKEAWAY
+  DINE_IN
+}
+
 model Restaurant {
   id             String         @id @default(uuid())
   name           String
@@ -77,15 +88,4 @@ model OrderProduct {
   price     Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-enum OrderStatus {
-  PENDING
-  IN_PREPARATION
-  FINISHED
-}
-
-enum ConsumptionMethod {
-  TAKEAWAY
-  DINE_IN
 }
