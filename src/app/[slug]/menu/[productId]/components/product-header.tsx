@@ -31,7 +31,12 @@ const ProductHeader = ({ product }: IProductHeaderProps) => {
         <ChevronLeftIcon />
       </Button>
 
-      <Image src={product.imageUrl} alt={product.name} fill className="object-contain" />
+      <Image
+        src={product.imageUrl}
+        alt={product.name}
+        fill
+        className="bg-gray-100 object-contain"
+      />
 
       <Button
         variant={"secondary"}

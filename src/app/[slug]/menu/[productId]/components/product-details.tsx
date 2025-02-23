@@ -52,7 +52,7 @@ const ProductDetails = ({ product }: IProductDetailsProps) => {
 
   return (
     <>
-      <div className="relative z-50 mt-[-1.5rem] flex flex-auto flex-col overflow-hidden rounded-t-3xl p-5">
+      <div className="relative z-50 mt-[-1.5rem] flex flex-auto flex-col overflow-hidden rounded-t-3xl bg-white p-5">
         <div className="flex-auto overflow-hidden">
           <div className="flex items-center gap-1.5">
             <Image

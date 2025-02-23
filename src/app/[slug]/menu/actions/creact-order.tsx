@@ -1,6 +1,7 @@
 "use server";
 
 import { ConsumptionMethod } from "@prisma/client";
+import { redirect } from "next/navigation";
 
 import { removerCpfPunctuation } from "@/helpers/cpf-valid";
 import { db } from "@/lib/prisma";
@@ -60,4 +61,6 @@ export const createOrder = async (input: ICreateOrderInput) => {
       ),
     },
   });
+
+  redirect(`/${input.slug}/orders?cpf=${removerCpfPunctuation(input.customerCpf)}`);
 };
